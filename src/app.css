@@ -91,3 +91,19 @@ body {
     radial-gradient(40% 60% at 50% 50%, rgba(255,255,255,0.03), transparent 70%),
     #000;
 }
+
+/* ورود نرم پنل‌ها */
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.glass {
+  animation: panelIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}

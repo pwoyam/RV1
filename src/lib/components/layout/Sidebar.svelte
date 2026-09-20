@@ -1,18 +1,17 @@
 <script lang="ts">
   import GlassPanel from '$lib/components/glass/GlassPanel.svelte';
+  import { route, type RouteId } from '$lib/stores/route.svelte';
 
-  const items = [
+  const items: { id: RouteId; label: string; icon: string }[] = [
     { id: 'today',    label: 'Today',    icon: '◐' },
     { id: 'habits',   label: 'Habits',   icon: '◎' },
     { id: 'tasks',    label: 'Tasks',    icon: '☑' },
     { id: 'journal',  label: 'Journal',  icon: '✎' },
     { id: 'notes',    label: 'Notes',    icon: '❐' },
     { id: 'goals',    label: 'Goals',    icon: '◇' },
-    { id: 'stats',    label: 'Insights', icon: '◈' },
+    { id: 'insights', label: 'Insights', icon: '◈' },
     { id: 'settings', label: 'Settings', icon: '⚙' },
   ];
-
-  let active = $state('today');
 </script>
 
 <GlassPanel variant="strong" padding="p-3" class="w-[220px] h-full flex flex-col">
@@ -24,9 +23,9 @@
   <nav class="flex flex-col gap-0.5 flex-1">
     {#each items as item}
       <button
-        onclick={() => active = item.id}
+        onclick={() => route.go(item.id)}
         class="group flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all
-               {active === item.id
+               {route.current === item.id
                  ? 'bg-white/10 text-white'
                  : 'text-white/55 hover:text-white/90 hover:bg-white/5'}"
       >

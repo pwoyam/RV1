@@ -1,6 +1,9 @@
 <script lang="ts">
   import GlassPanel from '$lib/components/glass/GlassPanel.svelte';
   import EnergyCheck from '$lib/components/ui/EnergyCheck.svelte';
+  import DailyShutdown from '$lib/components/ui/DailyShutdown.svelte';
+  import WeeklyReview from '$lib/components/ui/WeeklyReview.svelte';
+  import { rituals } from '$lib/stores/rituals.svelte';
   import { tasks } from '$lib/stores/tasks.svelte';
   import { habits, todayStr } from '$lib/stores/habits.svelte';
   import { lifeAreas } from '$lib/stores/lifeAreas.svelte';
@@ -27,6 +30,8 @@
   }
 
   const currentEntry = $derived(journal.forDate(today));
+  let shutdownOpen = $state(false);
+  let reviewOpen = $state(false);
 </script>
 
 <div class="h-full flex flex-col gap-3 overflow-hidden">
@@ -42,7 +47,26 @@
         {stats.lifeScore}<span class="text-white/30 text-lg">/100</span>
       </p>
     </div>
+    <div class="flex items-center gap-2">
+      <button
+        onclick={() => reviewOpen = true}
+        class="glass glass-sm px-4 py-2 text-xs text-white/80 hover:bg-white/8 transition-colors flex items-center gap-2"
+      >
+        <span>🗓️</span>
+        <span>{rituals.reviewThisWeek ? 'مرور هفته (انجام‌شده)' : 'مرور هفته'}</span>
+      </button>
+      <button
+        onclick={() => shutdownOpen = true}
+        class="glass glass-sm px-4 py-2 text-xs text-white/80 hover:bg-white/8 transition-colors flex items-center gap-2"
+      >
+        <span>🌙</span>
+        <span>{rituals.shutdownToday ? 'پایان روز (انجام‌شده)' : 'پایان روز'}</span>
+      </button>
+    </div>
   </GlassPanel>
+
+  <DailyShutdown open={shutdownOpen} onClose={() => shutdownOpen = false} />
+  <WeeklyReview open={reviewOpen} onClose={() => reviewOpen = false} />
 
   <EnergyCheck />
 

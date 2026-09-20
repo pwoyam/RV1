@@ -1,6 +1,8 @@
 <script lang="ts">
   import GlassPanel from '$lib/components/glass/GlassPanel.svelte';
   import { tasks, DEFAULT_CONTEXTS } from '$lib/stores/tasks.svelte';
+  import { selection } from '$lib/stores/selection.svelte';
+  import BulkBar from '$lib/components/ui/BulkBar.svelte';
   import { parseTask } from '$lib/utils/nlp';
   import RecurrencePicker from '$lib/components/ui/RecurrencePicker.svelte';
   import { describeRule } from '$lib/utils/recurrence';
@@ -45,6 +47,15 @@
 
   function toggleExpand(id: string) {
     expandedId = expandedId === id ? null : id;
+  }
+
+  function handleTaskClick(e: MouseEvent, id: string) {
+    if (e.shiftKey || e.metaKey || e.ctrlKey) {
+      e.preventDefault();
+      selection.toggle(id);
+      return;
+    }
+    toggleExpand(id);
   }
 
   const priorityColor: Record<Task['priority'], string> = {
@@ -150,7 +161,7 @@
   <GlassPanel padding="p-2" class="flex-1 overflow-y-auto">
     <ul class="flex flex-col">
       {#each visible as task (task.id)}
-        <li class="group rounded-xl hover:bg-white/3 transition-colors">
+        <li class="group rounded-xl transition-colors {selection.has(task.id) ? 'bg-white/10 ring-1 ring-white/20' : 'hover:bg-white/3'}">
           <div class="flex items-center gap-3 px-4 py-3">
             <button
               onclick={() => tasks.toggle(task.id)}
@@ -163,7 +174,7 @@
             <span class="w-1.5 h-1.5 rounded-full shrink-0 {priorityColor[task.priority]}"></span>
 
             <button
-              onclick={() => toggleExpand(task.id)}
+              onclick={(e) => handleTaskClick(e, task.id)}
               class="flex-1 text-left text-sm {task.done ? 'text-white/35 line-through' : 'text-white/90'} truncate"
             >
               {task.title}
@@ -263,4 +274,6 @@
       {/if}
     </ul>
   </GlassPanel>
+
+  <BulkBar />
 </div>

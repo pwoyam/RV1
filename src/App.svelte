@@ -10,21 +10,16 @@
   function onKeydown(e: KeyboardEvent) {
     const mod = e.metaKey || e.ctrlKey;
 
-    // ⌘K — Command Palette
     if (mod && !e.shiftKey && e.key.toLowerCase() === 'k') {
       e.preventDefault();
       command.toggle();
       return;
     }
-
-    // ⌘P — Search (Global)
     if (mod && !e.shiftKey && e.key.toLowerCase() === 'p') {
       e.preventDefault();
       search.toggle();
       return;
     }
-
-    // ⌘⇧Space — Quick Capture
     if (mod && e.shiftKey && e.code === 'Space') {
       e.preventDefault();
       capture.toggle();
@@ -35,7 +30,12 @@
 
 <svelte:window onkeydown={onKeydown} />
 
-<div class="aurora-bg"></div>
+<div class="aurora-bg">
+  <div class="blob-3"></div>
+  <div class="blob-4"></div>
+  <div class="veil"></div>
+</div>
+
 <AppShell />
 <CommandPalette />
 <QuickCapture />

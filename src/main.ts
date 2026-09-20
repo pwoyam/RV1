@@ -1,7 +1,18 @@
 import { mount } from 'svelte';
-import App from './App.svelte';
 import './app.css';
+import { db } from '$lib/utils/db';
+import { backupStore } from '$lib/stores/backup.svelte';
 
-const app = mount(App, { target: document.getElementById('app')! });
+async function bootstrap() {
+  try {
+    await db.init();
+    await backupStore.autoSnapshot();
+  } catch (e) {
+    console.error('[bootstrap] failed', e);
+  }
 
-export default app;
+  const { default: App } = await import('./App.svelte');
+  mount(App, { target: document.getElementById('app')! });
+}
+
+bootstrap();

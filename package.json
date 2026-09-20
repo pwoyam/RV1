@@ -11,6 +11,7 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^4.0.0",
     "@tailwindcss/vite": "^4.0.0",
+    "@tauri-apps/cli": "^2.11.4",
     "@tsconfig/svelte": "^5.0.4",
     "svelte": "^5.0.0",
     "tailwindcss": "^4.0.0",
@@ -21,5 +22,11 @@
     "onlyBuiltDependencies": [
       "esbuild"
     ]
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/plugin-dialog": "^2.7.3",
+    "@tauri-apps/plugin-fs": "^2.5.2",
+    "@tauri-apps/plugin-sql": "^2.4.1"
   }
 }

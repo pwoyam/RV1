@@ -9,6 +9,21 @@ export type LifeArea = {
   createdAt: number;
 };
 
+export type TaskContext = 
+  | 'anywhere' 
+  | 'home' 
+  | 'computer' 
+  | 'phone' 
+  | 'errands' 
+  | 'office'
+  | string;
+
+export type RecurrenceRule =
+  | { type: 'daily'; interval: number }
+  | { type: 'weekly'; days: number[]; interval: number }
+  | { type: 'monthly'; dayOfMonth: number | 'last'; interval: number }
+  | { type: 'yearly'; month: number; day: number };
+
 export type Task = {
   id: ID;
   title: string;
@@ -17,10 +32,14 @@ export type Task = {
   priority: 'low' | 'medium' | 'high';
   energy: 'low' | 'high';
   estimatedMin: number;
-  dueDate: string | null; // YYYY-MM-DD
+  dueDate: string | null;
   completedAt: number | null;
   projectId: ID | null;
   lifeAreaId: ID | null;
+  context: TaskContext | null;
+  waitingFor: string | null;
+  recurrence: RecurrenceRule | null;
+  recurringNext: string | null;
   createdAt: number;
   updatedAt: number;
 };
@@ -40,7 +59,7 @@ export type Habit = {
 export type HabitLog = {
   id: ID;
   habitId: ID;
-  date: string; // YYYY-MM-DD
+  date: string;
   value: number;
   note: string;
   createdAt: number;
@@ -48,10 +67,10 @@ export type HabitLog = {
 
 export type JournalEntry = {
   id: ID;
-  date: string; // YYYY-MM-DD
+  date: string;
   type: 'daily' | 'morning' | 'evening' | 'free';
-  mood: number | null;    // 1..5
-  energy: number | null;  // 1..5
+  mood: number | null;
+  energy: number | null;
   content: string;
   createdAt: number;
   updatedAt: number;

@@ -1,18 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink-900: #f5f5f7;
-  --color-ink-500: #6b6b73;
-  --glass-blur: 40px;
-  --glass-bg: rgba(255, 255, 255, 0.06);
-  --glass-bg-strong: rgba(255, 255, 255, 0.09);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-strong: rgba(255, 255, 255, 0.20);
-  --glass-highlight: rgba(255, 255, 255, 0.22);
-  --radius-glass: 24px;
-  --radius-glass-sm: 16px;
-  --radius-glass-lg: 32px;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --glass-blur: 80px;
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-strong: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-strong: rgba(255, 255, 255, 0.15);
+  --glass-highlight: rgba(255, 255, 255, 0.45);
+  --radius-glass: 36px;
+  --radius-glass-sm: 22px;
+  --radius-glass-lg: 48px;
+  --font-sans: "Inter", -apple-system, system-ui, sans-serif;
 }
 
 html, body, #app {
@@ -24,26 +22,38 @@ html, body, #app {
 }
 
 body {
-  background: #000;
-  color: var(--color-ink-900);
+  background: #000000;
+  color: #ffffff;
   overflow: hidden;
 }
 
-/* ==== Liquid Glass ==== */
+/* ============================================
+   LIQUID GLASS — حداکثری
+   ============================================ */
 .glass {
   position: relative;
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(200%) brightness(1.1);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(200%) brightness(1.1);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-glass);
   box-shadow:
-    inset 0 1px 0 0 var(--glass-highlight),
-    inset 0 -1px 0 0 rgba(255, 255, 255, 0.04),
-    0 8px 32px rgba(0, 0, 0, 0.45),
-    0 2px 8px rgba(0, 0, 0, 0.25);
+    /* هایلایت داخلی بالا — حس نور روی لبه */
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.55),
+    inset 0 2px 8px 0 rgba(255, 255, 255, 0.10),
+    /* سایه داخلی پایین */
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.06),
+    inset 0 -2px 12px 0 rgba(0, 0, 0, 0.15),
+    /* درخشش بیرونی نرم */
+    0 12px 48px rgba(0, 0, 0, 0.50),
+    0 4px 16px rgba(0, 0, 0, 0.25),
+    /* هاله‌ی نوری پشت شیشه */
+    0 0 60px rgba(255, 255, 255, 0.04);
+  animation: panelIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
 }
 
+/* حاشیه‌ی رنگین‌کمانی + اسپکیولار */
 .glass::before {
   content: "";
   position: absolute;
@@ -52,10 +62,12 @@ body {
   padding: 1px;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.35) 0%,
-    rgba(255, 255, 255, 0.02) 40%,
-    rgba(255, 255, 255, 0.02) 60%,
-    rgba(255, 255, 255, 0.18) 100%
+    rgba(255, 255, 255, 0.40) 0%,
+    rgba(200, 220, 255, 0.15) 20%,
+    rgba(255, 200, 240, 0.10) 40%,
+    rgba(200, 255, 240, 0.08) 55%,
+    rgba(255, 255, 255, 0.10) 70%,
+    rgba(255, 255, 255, 0.30) 100%
   );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
@@ -63,36 +75,142 @@ body {
   -webkit-mask-composite: xor;
           mask-composite: exclude;
   pointer-events: none;
+  z-index: 1;
+}
+
+/* انعکاس نور بالای شیشه — مثل بازتاب نور روی آب */
+.glass::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 40%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* فرزندان بالای لایه‌های تزئینی */
+.glass > * {
+  position: relative;
+  z-index: 2;
 }
 
 .glass-strong {
   background: var(--glass-bg-strong);
   border-color: var(--glass-border-strong);
+  backdrop-filter: blur(90px) saturate(220%) brightness(1.15);
+  -webkit-backdrop-filter: blur(90px) saturate(220%) brightness(1.15);
 }
 
 .glass-lg { border-radius: var(--radius-glass-lg); }
 .glass-sm { border-radius: var(--radius-glass-sm); }
 
+/* اسکرول‌بار شیشه‌ای */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 8px;
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.15); }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
 ::-webkit-scrollbar-track { background: transparent; }
 
+/* ============================================
+   پس‌زمینه مشکی-سفید متحرک
+   ============================================ */
 .aurora-bg {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background:
-    radial-gradient(60% 50% at 20% 15%, rgba(255,255,255,0.10), transparent 60%),
-    radial-gradient(50% 40% at 85% 80%, rgba(255,255,255,0.07), transparent 60%),
-    radial-gradient(40% 60% at 50% 50%, rgba(255,255,255,0.03), transparent 70%),
-    #000;
+  background: #000000;
+  overflow: hidden;
 }
 
-/* ورود نرم پنل‌ها */
+.aurora-bg::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 75%;
+  height: 90%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.15) 40%, transparent 70%);
+  filter: blur(80px);
+  animation: float1 50s ease-in-out infinite;
+}
+
+.aurora-bg::after {
+  content: "";
+  position: absolute;
+  bottom: -25%;
+  right: -15%;
+  width: 80%;
+  height: 95%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.10) 45%, transparent 70%);
+  filter: blur(80px);
+  animation: float2 60s ease-in-out infinite;
+}
+
+.aurora-bg .blob-3 {
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  width: 65%;
+  height: 75%;
+  background: radial-gradient(circle, rgba(220, 220, 220, 0.45) 0%, transparent 65%);
+  filter: blur(90px);
+  animation: float3 70s ease-in-out infinite;
+}
+
+.aurora-bg .blob-4 {
+  position: absolute;
+  top: 40%;
+  right: 20%;
+  width: 45%;
+  height: 55%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.40) 0%, transparent 60%);
+  filter: blur(70px);
+  animation: float4 45s ease-in-out infinite;
+}
+
+.aurora-bg .veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, transparent 20%, rgba(0, 0, 0, 0.65) 90%);
+  pointer-events: none;
+}
+
+@keyframes float1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(25%, 20%) scale(1.25); }
+  66%      { transform: translate(-10%, -12%) scale(0.85); }
+}
+
+@keyframes float2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(-22%, -15%) scale(1.20); }
+  66%      { transform: translate(12%, 10%) scale(0.90); }
+}
+
+@keyframes float3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-25%, 20%) scale(1.30); }
+}
+
+@keyframes float4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%      { transform: translate(-30%, -15%) scale(1.15); }
+  50%      { transform: translate(15%, 25%) scale(0.85); }
+  75%      { transform: translate(20%, -20%) scale(1.10); }
+}
+
 @keyframes panelIn {
   from {
     opacity: 0;
@@ -102,8 +220,4 @@ body {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-}
-
-.glass {
-  animation: panelIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }

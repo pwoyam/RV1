@@ -1,5 +1,6 @@
 <script lang="ts">
   import GlassPanel from '$lib/components/glass/GlassPanel.svelte';
+  import EnergyCheck from '$lib/components/ui/EnergyCheck.svelte';
   import { tasks } from '$lib/stores/tasks.svelte';
   import { habits, todayStr } from '$lib/stores/habits.svelte';
   import { lifeAreas } from '$lib/stores/lifeAreas.svelte';
@@ -42,6 +43,8 @@
       </p>
     </div>
   </GlassPanel>
+
+  <EnergyCheck />
 
   <div class="grid grid-cols-3 gap-3 flex-1 min-h-0">
     <!-- Life Areas -->

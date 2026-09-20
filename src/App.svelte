@@ -3,6 +3,7 @@
   import CommandPalette from '$lib/components/layout/CommandPalette.svelte';
   import QuickCapture from '$lib/components/layout/QuickCapture.svelte';
   import SearchPalette from '$lib/components/layout/SearchPalette.svelte';
+  import AutoPlanModal from '$lib/components/ui/AutoPlanModal.svelte';
   import { command } from '$lib/stores/command.svelte';
   import { capture } from '$lib/stores/capture.svelte';
   import { search } from '$lib/stores/search.svelte';
@@ -40,3 +41,4 @@
 <CommandPalette />
 <QuickCapture />
 <SearchPalette />
+<AutoPlanModal />

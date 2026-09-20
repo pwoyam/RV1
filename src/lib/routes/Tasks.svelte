@@ -3,6 +3,7 @@
   import { tasks, DEFAULT_CONTEXTS } from '$lib/stores/tasks.svelte';
   import { selection } from '$lib/stores/selection.svelte';
   import BulkBar from '$lib/components/ui/BulkBar.svelte';
+  import AutoPlan from '$lib/components/ui/AutoPlan.svelte';
   import { parseTask } from '$lib/utils/nlp';
   import RecurrencePicker from '$lib/components/ui/RecurrencePicker.svelte';
   import { describeRule } from '$lib/utils/recurrence';
@@ -72,10 +73,13 @@
 <div class="h-full flex flex-col gap-3 overflow-hidden">
   <GlassPanel padding="p-6">
     <p class="text-[11px] uppercase tracking-[0.25em] text-white/40">Tasks</p>
-    <h1 class="text-3xl font-light tracking-tight text-white mt-1">
-      {tasks.open.length} open
-      <span class="text-white/30 text-lg">· {tasks.completed.length} done</span>
-    </h1>
+    <div class="flex items-end justify-between">
+      <h1 class="text-3xl font-light tracking-tight text-white mt-1">
+        {tasks.open.length} open
+        <span class="text-white/30 text-lg">· {tasks.completed.length} done</span>
+      </h1>
+      <AutoPlan />
+    </div>
 
     <div class="mt-5 relative">
       <div class="flex items-center gap-3">
@@ -243,6 +247,27 @@
                   placeholder="منتظر کی / چی؟"
                   class="flex-1 glass glass-sm bg-transparent px-3 py-1.5 text-xs text-white/85 placeholder:text-white/25 outline-none"
                 />
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] uppercase tracking-widest text-white/40 w-16">Estimate</span>
+                <div class="flex items-center gap-2">
+                  <input
+                    type="number"
+                    min="0"
+                    step="5"
+                    value={task.estimatedMin || ''}
+                    oninput={(e) => tasks.update(task.id, { estimatedMin: Math.max(0, parseInt((e.target as HTMLInputElement).value) || 0) })}
+                    placeholder="0"
+                    class="w-20 glass glass-sm bg-transparent px-3 py-1.5 text-xs text-white/85 placeholder:text-white/25 outline-none text-center"
+                  />
+                  <span class="text-[10px] text-white/40">دقیقه</span>
+                  <span class="text-[10px] text-white/25 mx-1">·</span>
+                  <button onclick={() => tasks.update(task.id, { estimatedMin: 15 })} class="text-[10px] text-white/45 hover:text-white/80 px-1.5 py-1 rounded bg-white/5 hover:bg-white/10 transition-colors">15</button>
+                  <button onclick={() => tasks.update(task.id, { estimatedMin: 30 })} class="text-[10px] text-white/45 hover:text-white/80 px-1.5 py-1 rounded bg-white/5 hover:bg-white/10 transition-colors">30</button>
+                  <button onclick={() => tasks.update(task.id, { estimatedMin: 60 })} class="text-[10px] text-white/45 hover:text-white/80 px-1.5 py-1 rounded bg-white/5 hover:bg-white/10 transition-colors">60</button>
+                  <button onclick={() => tasks.update(task.id, { estimatedMin: 120 })} class="text-[10px] text-white/45 hover:text-white/80 px-1.5 py-1 rounded bg-white/5 hover:bg-white/10 transition-colors">2h</button>
+                </div>
               </div>
 
               <div class="flex items-center gap-2">
